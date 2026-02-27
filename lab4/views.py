@@ -1,16 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Orphanage, Child
 
 
 def home_page(request, category_id=None):
-    # Отримуємо всі дитбудинки для меню (хедера)
     orphanages = Orphanage.objects.all()
 
-    # Якщо в меню обрали конкретний дитбудинок, показуємо дітей тільки звідти
     if category_id:
         children = Child.objects.filter(orphanage_id=category_id)
     else:
-        # Якщо нічого не обрано - показуємо всіх
         children = Child.objects.all()
 
     context = {
@@ -18,3 +15,26 @@ def home_page(request, category_id=None):
         'children': children
     }
     return render(request, 'index.html', context)
+
+def child_detail(request, child_id):
+    # Шукаємо дитину за ID, або видаємо помилку 404, якщо не знайдено
+    child = get_object_or_404(Child, id=child_id)
+    orphanages = Orphanage.objects.all()  # Потрібно для відображення меню
+
+    context = {
+        'child': child,
+        'orphanages': orphanages
+    }
+    return render(request, 'child_detail.html', context)
+
+
+def buy_child(request, child_id):
+    # Знаходимо дитину за ID
+    child = get_object_or_404(Child, id=child_id)
+
+    # Змінюємо статус на "Куплено"
+    child.is_purchased = True
+    child.save()  # Зберігаємо зміни в базу
+
+    # Повертаємо користувача на головну сторінку
+    return redirect('home')

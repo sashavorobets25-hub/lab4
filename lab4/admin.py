@@ -7,7 +7,6 @@ class OrphanageAdmin(admin.ModelAdmin):
 
 @admin.register(Child)
 class ChildAdmin(admin.ModelAdmin):
-    # Виводимо ціну в загальний список
     list_display = ('first_name', 'last_name', 'age', 'price', 'orphanage', 'created_at', 'updated_at')
 
 @admin.register(Buyer)

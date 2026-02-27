@@ -27,7 +27,8 @@ class Child(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Створено о")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Оновлено о")
-
+    image = models.ImageField(upload_to='children_photos/', blank=True, null=True, verbose_name="Фото")
+    is_purchased = models.BooleanField(default=False, verbose_name="Куплено")
     def __str__(self):
         return f"{self.first_name} {self.last_name} — {self.price} грн"
 
@@ -40,7 +41,6 @@ class Buyer(models.Model):
     full_name = models.CharField(max_length=150, verbose_name="ПІБ покупця")
     phone = models.CharField(max_length=20, verbose_name="Телефон")
 
-    # Зв'язуємо покупця з дитиною
     child = models.ForeignKey(Child, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Куплена дитина")
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Створено о")
