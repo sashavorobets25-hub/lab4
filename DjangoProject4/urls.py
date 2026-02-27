@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from lab4 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Головна сторінка (показує всіх)
+    path('', views.home_page, name='home'),
+    # Сторінка при кліку на дитбудинок у меню
+    path('category/<int:category_id>/', views.home_page, name='category_filter'),
 ]

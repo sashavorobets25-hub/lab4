@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Головна сторінка</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Головна</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            {% for orphanage in orphanages %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'category_filter' orphanage.id %}">{{ orphanage.name }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4 flex-grow-1">
+        <div class="row">
+            {% for child in children %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ child.first_name }} {{ child.last_name }}</h5>
+                        <p class="card-text">Вік: {{ child.age }} років</p>
+                        <p class="card-text"><strong>Ціна: {{ child.price }} грн</strong></p>
+                        <span class="badge bg-secondary mb-3">{{ child.orphanage.name }}</span>
+                        <br>
+                        <button class="btn btn-success">Купити</button>
+                        <button class="btn btn-outline-info">Переглянути</button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p>Тут поки що нікого немає.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <div class="container">
+            <p class="mb-0">© 2026 Лабораторна робота 5.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
