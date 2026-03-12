@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from .models import Orphanage, Child
 
 
@@ -36,5 +37,6 @@ def buy_child(request, child_id):
     child.is_purchased = True
     child.save()  # Зберігаємо зміни в базу
 
-    # Повертаємо користувача на головну сторінку
+    messages.success(request, f"Вітаємо! Ви успішно здійснили покупку: {child.first_name} {child.last_name}.")
+
     return redirect('home')
