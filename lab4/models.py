@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Orphanage(models.Model):
@@ -52,3 +53,26 @@ class Buyer(models.Model):
     class Meta:
         verbose_name = "Покупець"
         verbose_name_plural = "Покупці"
+
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True, verbose_name="Електронна пошта")
+    date_subscribed = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Підписник"
+        verbose_name_plural = "Підписники"
+
+class Review(models.Model):
+    # Зв'язуємо відгук з конкретною дитиною
+    child = models.ForeignKey('Child', on_delete=models.CASCADE, related_name='reviews')
+    # Оцінка від 1 до 5
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        verbose_name="Оцінка"
+    )
+    comment = models.TextField(verbose_name="Відгук", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Відгук"
+        verbose_name_plural = "Відгуки"
